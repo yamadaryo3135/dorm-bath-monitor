@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: dorm-bath-monitor
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --bind 0.0.0.0:$PORT
+    envVars:
+      - key: API_KEY
+        value: bath_monitor_secret_key_2026
+      - key: PYTHON_VERSION
+        value: 3.11.0
