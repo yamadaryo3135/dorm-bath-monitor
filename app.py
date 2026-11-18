@@ -424,7 +424,7 @@ INLINE_LOGIN_HTML = """<!DOCTYPE html>
   <div class="login-card">
     <div class="icon">🔒</div>
     <h2>遠隔システム管理 ログイン</h2>
-    <p>管理パスワードを入力してください (初期値: daaaayama)</p>
+    <p>パスワードを入力してください</p>
     {% if error %}
       <div class="error-msg">{{ error }}</div>
     {% endif %}
