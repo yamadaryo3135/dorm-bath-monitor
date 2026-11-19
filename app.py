@@ -182,6 +182,7 @@ INLINE_HTML = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <title>寮風呂場 混雑状況モニター</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♨</text></svg>">
   <style>
@@ -417,6 +418,7 @@ INLINE_LOGIN_HTML = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <title>管理者ログイン - 寮風呂場モニター</title>
   <style>
     body {
@@ -479,6 +481,7 @@ INLINE_ADMIN_HTML = """<!DOCTYPE html>
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow, noarchive">
   <title>入退室ログ & 利用時間統計ダッシュボード - 寮風呂場モニター</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
@@ -1869,6 +1872,19 @@ def api_update():
         "message": "Updated successfully",
         "server_time": now_str
     })
+
+
+@app.after_request
+def add_security_headers(response):
+    """Google等の検索エンジンにインデックスされないようヘッダーでも強制ブロック"""
+    response.headers["X-Robots-Tag"] = "noindex, nofollow, noarchive"
+    return response
+
+
+@app.route("/robots.txt")
+def robots_txt():
+    """全検索エンジンの巡回・インデックスを完全に拒否"""
+    return Response("User-agent: *\\nDisallow: /\\n", mimetype="text/plain")
 
 
 @app.route("/health")
